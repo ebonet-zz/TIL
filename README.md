@@ -5,6 +5,9 @@ This Readme splits files by topic or language, while files on the repo are
 organized in chronological order.
 
 
+### Android
+* [Customizing Android Studio Setter Generator to create Chainable Setters](030516__android__customizing_android_studio_setter_generator.md) (_03/05/16_)
+
 ### BASH
 
 * [Piping STDERR and STDOUT to different files](030116__bash__piping_stderr_stdout_to_different_files.md) (_03/01/2016_)
