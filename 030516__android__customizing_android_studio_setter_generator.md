@@ -6,6 +6,7 @@ For me, no methods should return void. Void is useless. You can do nothing with 
 Instead, why not make the function return the object instead of void. This way, instead of:
 
 ```java
+
   Obj = new Obj();
   obj.setProp1(prop1);
   obj.setProp2(prop2);
@@ -19,7 +20,7 @@ We could have:
 ```
 
 Creating getters/setters is a really boring process, and luckily IntelliJ/Android Studio
-generate those automagically. But returning void. Happily, those guys at JetBrains
+generate those automagically. But returning *void*. Happily, those guys at JetBrains
 made everything in their platforms customizable, even code generation. So let's change that.
 
 Opening the `Insert | Setters` dialog, you can select the template of the setter, and by the right
@@ -44,3 +45,30 @@ void set$StringUtil.capitalizeWithJavaBeanConvention($StringUtil.sanitizeJavaIde
 $field.name = $paramName;
 }
 ```
+
+We need to change do things to create chainable setters from the default setter:
+change the return type and add a `return this` statement. Create a new template
+ called *Chainable* add the following code:
+
+```
+#set($paramName = $helper.getParamName($field, $project))
+public ##
+#if($field.modifierStatic)
+  static ##
+#end
+$class.name set$StringUtil.capitalizeWithJavaBeanConvention($StringUtil.sanitizeJavaIdentifier($helper.getPropertyName($field, $project)))($field.type $paramName) {
+  #if ($field.name == $paramName)
+    #if (!$field.modifierStatic)
+      this.##
+    #else
+      $classname.##
+    #end
+  #end
+  $field.name = $paramName;
+
+  return this;
+}
+```
+
+Now when creating setters, you can choose `Chainable` from the template dropdown.
+Easy as that!
